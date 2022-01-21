@@ -77,7 +77,7 @@ const MyWeather = () => {
 
   return (
     <div>
-      <h1 className="heading">My Weather</h1>
+      <h1 className="heading">My Weather Services</h1>
       <form onSubmit={onFormSubmit} action="">
         <input
           type="text"
