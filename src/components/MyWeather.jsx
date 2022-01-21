@@ -4,7 +4,7 @@ import axios from "axios";
 const MyWeather = () => {
   const [Place, setPlace] = useState("");
   const [weather, setWeather] = useState([]);
-  const [Err, setErr] = useState("");
+  // const [Err, setErr] = useState("");
 
   const onInputChange = (event) => {
     setPlace(event.target.value);
@@ -19,8 +19,7 @@ const MyWeather = () => {
 
     // positionstack api for converting address to latitude and longitude
     const response = await axios.get(
-      `http://api.positionstack.com/v1/forward?access_key=${PSApiKey}&query=${Place}`,
-      {}
+      `http://api.positionstack.com/v1/forward?access_key=${PSApiKey}&query=${Place}`
     );
     const fetchedData = response.data.data[0];
     const currentLat = fetchedData.latitude;
@@ -28,12 +27,16 @@ const MyWeather = () => {
 
     // openweather Api for fetching weather forcast
 
-    const newResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${currentLat}&lon=${currentLong}&units=metric&appid=${apiKey}`
-    );
-
-    setWeather(newResponse.data.daily);
-    console.log(newResponse.data.daily);
+    try {
+      const newResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${currentLat}&lon=${currentLong}&units=metric&appid=${apiKey}`
+      );
+      setWeather(newResponse.data.daily);
+      console.log(newResponse.data.daily);
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    }
   };
 
   const Display = weather.map((info, index) => {
@@ -85,7 +88,7 @@ const MyWeather = () => {
         />
         <input className="form-btn" type="submit" value="search" />
       </form>
-      <div>{Err}</div>
+      {/* <div>{Err}</div> */}
 
       <div className="weather-card-wrapper">{Display}</div>
     </div>
